@@ -51,7 +51,7 @@ export default function Home() {
           fontSize: "0.9rem",
         }}
       >
-        Running on EKS with ArgoCD GitOps - Updated ArgoCD Application
+        Running on EKS with ArgoCD GitOps - Updated ArgoCD Application - Workshop - Updated - GitHub Actions - GitOps - ArgoCD
       </p>
 
       {loading && <p style={{ textAlign: "center" }}>Loading...</p>}
