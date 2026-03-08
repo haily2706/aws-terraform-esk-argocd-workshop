@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: greeting-app
-          image: haily2706/aws-terraform-esk-argocd-workshop:406d448
+          image: haily2706/aws-terraform-esk-argocd-workshop:572248d
           #      ↑ This tag gets updated by GitHub Actions after each build
           ports:
             - containerPort: 3000
