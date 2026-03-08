@@ -1,0 +1,19 @@
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/*.tfvars
+terraform/.terraform.lock.hcl
+
+# Node
+app/node_modules/
+app/.next/
+
+# OS
+.DS_Store
+*.swp
+
+# Environment
+.env
+.env.local
+.credential.md
