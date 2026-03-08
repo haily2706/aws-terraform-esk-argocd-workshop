@@ -1,0 +1,19 @@
+# k8s/postgres/service.yaml
+# ─────────────────────────────────────────────────────────────
+# ClusterIP service — creates DNS entry for internal access.
+# Other pods connect via: postgres.default.svc.cluster.local
+# Or just: postgres (within the same namespace)
+# ─────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  type: ClusterIP                     # ← internal only, no external access
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres                     # ← routes to pods with label app=postgres

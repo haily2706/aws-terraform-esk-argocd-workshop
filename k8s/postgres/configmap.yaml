@@ -1,0 +1,26 @@
+# k8s/postgres/configmap.yaml
+# ─────────────────────────────────────────────────────────────
+# Init SQL script — runs automatically on first PostgreSQL boot.
+# PostgreSQL's Docker image executes all .sql files found in
+# /docker-entrypoint-initdb.d/ when the data directory is empty.
+# ─────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-sql
+  labels:
+    app: postgres
+data:
+  init.sql: |
+    CREATE TABLE IF NOT EXISTS greetings (
+        id SERIAL PRIMARY KEY,
+        message TEXT NOT NULL
+    );
+
+    INSERT INTO greetings (message) VALUES
+        ('Hello from Kubernetes!'),
+        ('Welcome to the EKS workshop!'),
+        ('PostgreSQL is running in a pod!'),
+        ('GitOps with ArgoCD is awesome!'),
+        ('This greeting was seeded automatically!')
+    ON CONFLICT DO NOTHING;

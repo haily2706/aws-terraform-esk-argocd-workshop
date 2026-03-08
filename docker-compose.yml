@@ -1,0 +1,22 @@
+# docker-compose.yml (temporary, for local testing only)
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: greetingdb
+      POSTGRES_USER: greetuser
+      POSTGRES_PASSWORD: greetpass123
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    build:
+      context: ./app
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://greetuser:greetpass123@db:5432/greetingdb
+    depends_on:
+      - db

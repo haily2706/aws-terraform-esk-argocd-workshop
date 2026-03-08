@@ -1,0 +1,21 @@
+# k8s/app/service.yaml
+# ─────────────────────────────────────────────────────────────
+# Exposes the Next.js app. Use LoadBalancer to access from
+# your browser, or ClusterIP + port-forward for zero cost.
+# ─────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: greeting-app
+  labels:
+    app: greeting-app
+spec:
+  type: LoadBalancer                  # ← creates an AWS NLB
+  # To save money, use ClusterIP instead:
+  # type: ClusterIP
+  # Then access via: kubectl port-forward svc/greeting-app 8080:80
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: greeting-app

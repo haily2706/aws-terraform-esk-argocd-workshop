@@ -1,0 +1,56 @@
+# k8s/app/deployment.yaml
+# ─────────────────────────────────────────────────────────────
+# Next.js greeting app deployment.
+# The image tag gets updated by GitHub Actions CI pipeline.
+# ─────────────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeting-app
+  labels:
+    app: greeting-app
+spec:
+  replicas: 1                         # ← 1 replica to fit on single node
+  selector:
+    matchLabels:
+      app: greeting-app
+  template:
+    metadata:
+      labels:
+        app: greeting-app
+    spec:
+      containers:
+        - name: greeting-app
+          image: haily2706/aws-terraform-esk-argocd-workshop:latest
+          #      ↑ This tag gets updated by GitHub Actions after each build
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://greetuser:greetpass123@postgres:5432/greetingdb"
+              # ↑ "postgres" = the Service name from k8s/postgres/service.yaml
+              #   Kubernetes DNS resolves this to the PostgreSQL pod's IP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /api/greetings
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/greetings
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0               # ← keep old pod until new one is ready
+      maxSurge: 1                     # ← create 1 extra pod during update

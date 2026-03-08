@@ -1,0 +1,18 @@
+# k8s/postgres/pvc.yaml
+# ─────────────────────────────────────────────────────────────
+# Persistent storage for PostgreSQL data.
+# On EKS, uses the default StorageClass (gp2 or gp3 EBS).
+# ─────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  labels:
+    app: postgres
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce                   # ← only one pod can mount at a time
+  resources:
+    requests:
+      storage: 1Gi                    # ← 1 GiB is plenty for a workshop
